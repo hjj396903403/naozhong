@@ -1,0 +1,507 @@
+C51 COMPILER V9.00   SHIZHONG                                                              11/19/2014 16:00:52 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE SHIZHONG
+OBJECT MODULE PLACED IN shizhong.OBJ
+COMPILER INVOKED BY: e:\Keil\C51\BIN\C51.EXE shizhong.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          #define uchar unsigned char
+   3          #define uint unsigned int 
+   4          uchar tabel1[]={~0x3f,~0x06,~0x5b,~0x4f,~0x66,~0x6d,~0x7d,~0x07,~0x7f,~0x6f,~0x40,~0x00};
+   5          uchar tabel2[]={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};
+   6          uchar shi,fen,miao,ii,jj,d[8],dd[8],dd1[8],dd2[8],ts,naozhong,ns,nf,ns1,nf1,ns2,nf2,flag,bp,nflag,nflag1,n
+             -flag2,geflag,num2;
+   7          sbit key1=P1^4;
+   8          sbit key2=P1^5;
+   9          sbit key3=P1^6;
+  10          sbit key4=P1^7;
+  11          sbit beep=P3^7;
+  12          sbit wei1=P2^0;
+  13          sbit wei2=P2^1;
+  14          sbit wei3=P2^3;
+  15          sbit wei4=P2^4;
+  16          sbit wei5=P2^6;
+  17          sbit wei6=P2^7;
+  18          
+  19          void delay(uint a)
+  20          {
+  21   1              uint i;
+  22   1              for(;a>0;a--)
+  23   1              for(i=6245;i>0;i--);
+  24   1      }
+  25          void delay1(uint a)
+  26          {
+  27   1              uchar i;
+  28   1              for(;a>0;a--)
+  29   1              for(i=19;i>0;i--);
+  30   1      }
+  31          void display()
+  32          {
+  33   1              uchar i;
+  34   1              d[0]=shi/10;
+  35   1              d[1]=shi%10;
+  36   1              d[2]=10;
+  37   1              d[3]=fen/10;
+  38   1              d[4]=fen%10;
+  39   1              d[5]=10;
+  40   1              d[6]=miao/10;
+  41   1              d[7]=miao%10;
+  42   1      
+  43   1              dd[0]=ns/10;
+  44   1              dd[1]=ns%10;
+  45   1              dd[2]=10;
+  46   1              dd[3]=nf/10;
+  47   1              dd[4]=nf%10;
+  48   1              dd[5]=11;
+  49   1              dd[6]=bp;
+  50   1              dd[7]=naozhong;
+  51   1      
+  52   1              dd1[0]=ns1/10;
+  53   1              dd1[1]=ns1%10;
+  54   1              dd1[2]=10;
+C51 COMPILER V9.00   SHIZHONG                                                              11/19/2014 16:00:52 PAGE 2   
+
+  55   1              dd1[3]=nf1/10;
+  56   1              dd1[4]=nf1%10;
+  57   1              dd1[5]=11;
+  58   1              dd1[6]=bp;
+  59   1              dd1[7]=naozhong;
+  60   1      
+  61   1              dd2[0]=ns2/10;
+  62   1              dd2[1]=ns2%10;
+  63   1              dd2[2]=10;
+  64   1              dd2[3]=nf2/10;
+  65   1              dd2[4]=nf2%10;
+  66   1              dd2[5]=11;
+  67   1              dd2[6]=bp;
+  68   1              dd2[7]=naozhong;
+  69   1              for(i=0;i<8;i++)
+  70   1              {
+  71   2                      if(naozhong==0)
+  72   2                      {
+  73   3                              P0=tabel1[d[i]];
+  74   3                              if((i==7)&&(bp==1))
+  75   3                              {
+  76   4                                      P0=P0&0x7f;
+  77   4                              }
+  78   3                      }
+  79   2                      if(naozhong==1)
+  80   2                      {
+  81   3                              P0=tabel1[dd[i]];
+  82   3                      }
+  83   2                      if(naozhong==2)
+  84   2                      {
+  85   3                              P0=tabel1[dd1[i]];
+  86   3                      }
+  87   2                      if(naozhong==3)
+  88   2                      {
+  89   3                              P0=tabel1[dd2[i]];
+  90   3                      }
+  91   2                      P2=tabel2[i];
+  92   2                      if((ts==1)&&(flag==0))
+  93   2                      {
+  94   3                              wei1=1;
+  95   3                              wei2=1;
+  96   3                      }
+  97   2                      
+  98   2                      if((ts==2)&&(flag==0))
+  99   2                      {
+ 100   3                              wei3=1;
+ 101   3                              wei4=1;
+ 102   3                      }
+ 103   2                      if((ts==3)&&(flag==0))
+ 104   2                      {
+ 105   3                              wei5=1;
+ 106   3                              wei6=1;
+ 107   3                      }
+ 108   2                      if((naozhong==1)&&((nflag==0)&&(flag==0))||((naozhong==2)&&(nflag1==0)&&(flag==0))||((naozhong==3)&&(nfl
+             -ag2==0)&&(flag==0)))
+ 109   2                      {
+ 110   3                              wei1=1;
+ 111   3                              wei2=1;
+ 112   3                      }
+ 113   2                      if((naozhong==1)&&((nflag==1)&&(flag==0))||((naozhong==2)&&(nflag1==1)&&(flag==0))||((naozhong==3)&&(nfl
+             -ag2==1)&&(flag==0)))
+ 114   2                      {
+C51 COMPILER V9.00   SHIZHONG                                                              11/19/2014 16:00:52 PAGE 3   
+
+ 115   3                              wei3=1;
+ 116   3                              wei4=1;
+ 117   3                      }
+ 118   2                      delay1(5);
+ 119   2                      P2=0xff;
+ 120   2              }       
+ 121   1      }
+ 122          
+ 123          void key()
+ 124          {
+ 125   1              if(naozhong==0)
+ 126   1              {
+ 127   2                      if(key1==0)
+ 128   2                      {
+ 129   3                              delay1(10);
+ 130   3                              if(key1==0)
+ 131   3                              {
+ 132   4                                      
+ 133   4                                      ts++;
+ 134   4                                      
+ 135   4                                      if(ts==4)
+ 136   4                                      {
+ 137   5                                              ts=0;
+ 138   5                                      }
+ 139   4                                      if((ts==1)||(ts==2)||(ts==3))                   
+ 140   4                                      {
+ 141   5                                              TR0=0;
+ 142   5                                      }
+ 143   4                                      while(!key1) display(); 
+ 144   4                              }
+ 145   3                              delay1(10);
+ 146   3                              while(!key1);
+ 147   3                      }
+ 148   2                      
+ 149   2                      if(ts==0)
+ 150   2                      {
+ 151   3                              TR0=1;
+ 152   3                              
+ 153   3                      }
+ 154   2                      if(ts==1)
+ 155   2                      {
+ 156   3                              if(key3==0)
+ 157   3                              {
+ 158   4                                      delay1(10);
+ 159   4                                      if(key3==0)
+ 160   4                                      {
+ 161   5                                              shi++;
+ 162   5                                              if(shi==24)
+ 163   5                                              {
+ 164   6                                                      shi=0;
+ 165   6                                              }
+ 166   5                                      }
+ 167   4                              delay1(10);
+ 168   4                              while(!key3)display();
+ 169   4                              }
+ 170   3                      }
+ 171   2                      if(ts==2)
+ 172   2                      {
+ 173   3                              if(key3==0)
+ 174   3                              {
+ 175   4                                      delay1(10);
+ 176   4                                      if(key3==0)
+C51 COMPILER V9.00   SHIZHONG                                                              11/19/2014 16:00:52 PAGE 4   
+
+ 177   4                                      {
+ 178   5                                              fen++;
+ 179   5                                              if(fen==60)
+ 180   5                                              {
+ 181   6                                                      fen=0;
+ 182   6                                              }
+ 183   5                                      }
+ 184   4                              delay1(10);
+ 185   4                              while(!key3)display();
+ 186   4                              }
+ 187   3                      }
+ 188   2                      if(ts==3)
+ 189   2                      {
+ 190   3                              if(key3==0)
+ 191   3                              {
+ 192   4                                      delay1(10);
+ 193   4                                      if(key3==0)
+ 194   4                                      {
+ 195   5                                              miao++;
+ 196   5                                              if(miao==60)
+ 197   5                                              {
+ 198   6                                                      miao=0;
+ 199   6                                              }
+ 200   5                                      }
+ 201   4                              delay1(10);
+ 202   4                              while(!key3)display();
+ 203   4                              }
+ 204   3                      }
+ 205   2              }
+ 206   1              if(key2==0)
+ 207   1              {
+ 208   2                      delay1(10);
+ 209   2                      if(key2==0)
+ 210   2                      {
+ 211   3                              bp++;
+ 212   3                              if(bp==2)
+ 213   3                              {
+ 214   4                                      bp=0;
+ 215   4                              }
+ 216   3                              while(!key2) display();
+ 217   3                      }
+ 218   2                      delay1(10);
+ 219   2                      while(!key2);
+ 220   2              }
+ 221   1              if(ts==0)
+ 222   1              {
+ 223   2                      if(key4==0)
+ 224   2                      {
+ 225   3                              delay1(10);
+ 226   3                              if(key4==0)
+ 227   3                              {
+ 228   4                                      
+ 229   4                                      naozhong++;
+ 230   4                                      if(naozhong==4)
+ 231   4                                      {
+ 232   5                                              naozhong=0;
+ 233   5                                      }
+ 234   4              
+ 235   4                                      while(!key4)display();
+ 236   4                              }
+ 237   3                              delay1(10);
+ 238   3                              while(!key4);
+C51 COMPILER V9.00   SHIZHONG                                                              11/19/2014 16:00:52 PAGE 5   
+
+ 239   3                      }
+ 240   2                      
+ 241   2                      if(naozhong==1)
+ 242   2                      {        
+ 243   3                              if(key1==0)
+ 244   3                              {
+ 245   4                                      delay1(10);
+ 246   4                                      if(key1==0)
+ 247   4                                      {
+ 248   5                                              nflag++;
+ 249   5                                              if(nflag==2)
+ 250   5                                              {
+ 251   6                                                      nflag=0;
+ 252   6                                              }
+ 253   5                                      }
+ 254   4                                      while(!key1)display();
+ 255   4                              }
+ 256   3                              if(nflag==0)
+ 257   3                              {
+ 258   4                                       if(key3==0)
+ 259   4                                      {
+ 260   5                                              delay1(10);
+ 261   5                                              if(key3==0)
+ 262   5                                              {
+ 263   6                                                      ns++;
+ 264   6                                                      if(ns==24)
+ 265   6                                                      {
+ 266   7                                                              ns=0;
+ 267   7                                                      }
+ 268   6                                              }
+ 269   5                                      delay1(10);
+ 270   5                                      while(!key3)display();
+ 271   5                                      }
+ 272   4                              }
+ 273   3                              if(nflag==1)
+ 274   3                              {
+ 275   4                                      if(key3==0)
+ 276   4                                      {
+ 277   5                                              delay1(10);
+ 278   5                                              if(key3==0)
+ 279   5                                              {
+ 280   6                                                      nf++;
+ 281   6                                                      if(nf==60)
+ 282   6                                                      {
+ 283   7                                                              nf=0;
+ 284   7                                                      }
+ 285   6                                              }
+ 286   5                                      delay1(10);
+ 287   5                                      while(!key3)display();
+ 288   5                                      }
+ 289   4                              }
+ 290   3                      }
+ 291   2                      if(naozhong==2)
+ 292   2                      {
+ 293   3                              if(key1==0)
+ 294   3                              {
+ 295   4                                      delay1(10);
+ 296   4                                      if(key1==0)
+ 297   4                                      {
+ 298   5                                              nflag1++;
+ 299   5                                              if(nflag1==2)
+ 300   5                                              {
+C51 COMPILER V9.00   SHIZHONG                                                              11/19/2014 16:00:52 PAGE 6   
+
+ 301   6                                                      nflag1=0;
+ 302   6                                              }
+ 303   5                                      }
+ 304   4                                      while(!key1)display();
+ 305   4                              }
+ 306   3                              if(nflag1==0)
+ 307   3                              {
+ 308   4                                       if(key3==0)
+ 309   4                                      {
+ 310   5                                              delay1(10);
+ 311   5                                              if(key3==0)
+ 312   5                                              {
+ 313   6                                                      ns1++;
+ 314   6                                                      if(ns1==24)
+ 315   6                                                      {
+ 316   7                                                              ns1=0;
+ 317   7                                                      }
+ 318   6                                              }
+ 319   5                                      delay1(10);
+ 320   5                                      while(!key3)display();
+ 321   5                                      }
+ 322   4                              }
+ 323   3                              if(nflag1==1)
+ 324   3                              {
+ 325   4                                      if(key3==0)
+ 326   4                                      {
+ 327   5                                              delay1(10);
+ 328   5                                              if(key3==0)
+ 329   5                                              {
+ 330   6                                                      nf1++;
+ 331   6                                                      if(nf1==60)
+ 332   6                                                      {
+ 333   7                                                              nf1=0;
+ 334   7                                                      }
+ 335   6                                              }
+ 336   5                                      delay1(10);
+ 337   5                                      while(!key3)display();
+ 338   5                                      }
+ 339   4                              }
+ 340   3                      }
+ 341   2                      
+ 342   2                      if(naozhong==3)
+ 343   2                      {
+ 344   3                              if(key1==0)
+ 345   3                              {
+ 346   4                                      delay1(10);
+ 347   4                                      if(key1==0)
+ 348   4                                      {
+ 349   5                                              nflag2++;
+ 350   5                                              if(nflag2==2)
+ 351   5                                              {
+ 352   6                                                      nflag2=0;
+ 353   6                                              }
+ 354   5                                      }
+ 355   4                                      while(!key1)display();
+ 356   4                              }
+ 357   3                              if(nflag2==0)
+ 358   3                              {
+ 359   4                                       if(key3==0)
+ 360   4                                      {
+ 361   5                                              delay1(10);
+ 362   5                                              if(key3==0)
+C51 COMPILER V9.00   SHIZHONG                                                              11/19/2014 16:00:52 PAGE 7   
+
+ 363   5                                              {
+ 364   6                                                      ns2++;
+ 365   6                                                      if(ns2==24)
+ 366   6                                                      {
+ 367   7                                                              ns2=0;
+ 368   7                                                      }
+ 369   6                                              }
+ 370   5                                      delay1(10);
+ 371   5                                      while(!key3)display();
+ 372   5                                      }
+ 373   4                              }
+ 374   3                              if(nflag2==1)
+ 375   3                              {
+ 376   4                                      if(key3==0)
+ 377   4                                      {
+ 378   5                                              delay1(10);
+ 379   5                                              if(key3==0)
+ 380   5                                              {
+ 381   6                                                      nf2++;
+ 382   6                                                      if(nf2==60)
+ 383   6                                                      {
+ 384   7                                                              nf2=0;
+ 385   7                                                      }
+ 386   6                                              }
+ 387   5                                      delay1(10);
+ 388   5                                      while(!key3)display();
+ 389   5                                      }
+ 390   4                              }
+ 391   3                      }
+ 392   2              }       
+ 393   1      }
+ 394          void main()
+ 395          {
+ 396   1              TMOD=0x11;
+ 397   1              TH0=(65536-46296)/256;
+ 398   1              TL0=(65536-46296)%256;
+ 399   1              TH1=(65536-46296)/256;
+ 400   1              TL1=(65536-46296)%256;
+ 401   1              EA=1;
+ 402   1              ET0=1;
+ 403   1              ET1=1;
+ 404   1              TR0=1;
+ 405   1              TR1=1;
+ 406   1              beep=1;
+ 407   1              shi=12;
+ 408   1              while(1)
+ 409   1              {
+ 410   2                 display();
+ 411   2                 key();
+ 412   2                 if(((geflag==0)&&(shi==ns)&&(fen==nf)&&(bp==1))||((geflag==0)&&(shi==ns1)&&(fen==nf1)&&(bp==1))||((gef
+             -lag==0)&&(shi==ns2)&&(fen==nf2)&&(bp==1)))
+ 413   2                 {
+ 414   3                               beep=0;
+ 415   3                               delay1(50);
+ 416   3                               beep=1;
+ 417   3                 }
+ 418   2      
+ 419   2              }
+ 420   1      
+ 421   1      }
+ 422          void timer() interrupt 1
+ 423          {
+C51 COMPILER V9.00   SHIZHONG                                                              11/19/2014 16:00:52 PAGE 8   
+
+ 424   1              TH0=(65536-46296)/256;
+ 425   1              TL0=(65536-46296)%256;
+ 426   1              jj++;
+ 427   1              
+ 428   1              if(jj==20)
+ 429   1              {
+ 430   2                      jj=0;
+ 431   2                      
+ 432   2                      miao++;
+ 433   2              }
+ 434   1              if(miao==60)
+ 435   1              {
+ 436   2                      miao=0;
+ 437   2                      fen++;
+ 438   2              }
+ 439   1              if(fen==60)
+ 440   1              {
+ 441   2                      fen=0;
+ 442   2                      shi++;
+ 443   2              }
+ 444   1              if(shi==24)
+ 445   1              {
+ 446   2                      shi=0;
+ 447   2              }
+ 448   1                      
+ 449   1      }
+ 450          void timer1() interrupt 3
+ 451          {
+ 452   1              TH1=(65536-46296)/256;
+ 453   1              TL1=(65536-46296)%256;
+ 454   1              ii++;
+ 455   1              num2++;
+ 456   1              if(ii==10)
+ 457   1              {
+ 458   2                      ii=0;
+ 459   2                      flag=~flag;
+ 460   2              }
+ 461   1              if(num2==5)
+ 462   1              {
+ 463   2                      num2=0;
+ 464   2                      geflag=~geflag;
+ 465   2              }
+ 466   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1283    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     72    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
